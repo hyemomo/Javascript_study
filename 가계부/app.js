@@ -9,7 +9,6 @@ const total_income = document.querySelector(".total_income");
 const total_expenses = document.querySelector(".total_expenses");
 
 const date = document.querySelector(".date");
-const trash = document.querySelector(".fa-trash");
 
 let balance = 0;
 let income = 0;
@@ -32,7 +31,7 @@ form.addEventListener("submit", (e) => {
     item_price = parseInt(popup_price.value);
     item_type = document.querySelector('input[name="type"]:checked').value;
 
-    makeItem();
+    addItem();
     updateMoney();
 
     popup_name.value = "";
@@ -51,24 +50,33 @@ const init = () => {
   }월 ${today.getDate()}일`;
 };
 
-function makeItem() {
-  const li = document.createElement("li");
-  const span = document.createElement("span");
-  const i = document.createElement("i");
+function addItem() {
+  const item = document.createElement("li");
+  const comment= document.createElement("span");
+  const deleteBtn = document.createElement("i");
   if (item_type === "income") {
-    li.classList.add("green");
-    li.setAttribute("id", `${self.crypto.randomUUID()}`);
+    item.classList.add("green");
+    item.setAttribute("id", `${self.crypto.randomUUID()}`);
   }
-  i.classList.add("fa");
-  i.classList.add("fa-trash");
+  deleteBtn.classList.add("fa");
+  deleteBtn.classList.add("fa-trash");
 
-  span.innerHTML = `${
+  comment.innerHTML = `${
     item_type === "income" ? "수입" : "지출"
   }    ${item_price}원 : ${item_name}`;
-  li.append(span);
-  li.append(i);
+  item.append(comment);
+  item.append(deleteBtn);
 
-  ul.appendChild(li);
+  ul.appendChild(item);
+
+
+  deleteBtn.addEventListener("click",(e)=>{
+console.log("dj;sf")
+// console.dir(e.target.parentElement)
+e.target.parentElement.remove()
+  })
+
+
 }
 
 const updateMoney = () => {
@@ -86,6 +94,3 @@ const updateMoney = () => {
 
 init();
 
-trash.addEventListener("click", () => {
-  console.log("");
-});
