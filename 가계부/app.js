@@ -61,7 +61,7 @@ function makeItem() {
   }
   i.classList.add("fa");
   i.classList.add("fa-trash");
-// hgkjh
+
   span.innerHTML = `${
     item_type === "income" ? "수입" : "지출"
   }    ${item_price}원 : ${item_name}`;
