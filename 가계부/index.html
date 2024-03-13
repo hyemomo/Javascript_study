@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="app.css" />
+    <script
+      src="https://kit.fontawesome.com/970bb419a4.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <section class="app">
+      <header class="header">
+        <span class="date"></span>
+        <section class="total_balance"></section>
+        <section class="total_income"></section>
+        <section class="total_expenses"></section>
+      </header>
+
+      <section class="container">
+        <span class="title">소비 내역</span>
+        <ul class="itemList"></ul>
+      </section>
+      <section class="input_popup">
+        <form class="form">
+          <button type="submit"class="popup_btn"><i class="fa-solid fa-plus"></i></button>
+
+          <label for="income"
+            ><input
+              type="radio"
+              id="income"
+              name="type"
+              value="income"
+              checked
+            />수입</label
+          >
+          <label for="expenses"
+            ><input type="radio" name="type" value="expenses" />지출</label
+          >
+           <label for="price"
+            >가격
+            <input
+              id="price"
+              class="popup_price"
+              type="number"
+              placeholder="가격을 입력하세요"
+          /></label>
+          <label for="name"
+            >종류 <input id="name" class="popup_name" type="text"
+          /></label>
+         
+        </form>
+      </section>
+    </section>
+  </body>
+</html>
