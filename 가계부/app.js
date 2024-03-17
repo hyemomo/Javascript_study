@@ -1,5 +1,7 @@
-const form = document.querySelector(".form");
+const form = document.querySelector("form");
 const popup_btn = document.querySelector(".popup_btn");
+const content = document.querySelector(".form_content");
+const popupArea = document.querySelector(".popup_area");
 const popup_name = document.querySelector(".popup_name");
 const popup_price = document.querySelector(".popup_price");
 const ul = document.querySelector(".itemList");
@@ -9,6 +11,13 @@ const total_income = document.querySelector(".total_income");
 const total_expenses = document.querySelector(".total_expenses");
 const date = document.querySelector(".date");
 let historyArr = [];
+
+popup_btn.addEventListener("click", (e) => {
+  e.preventDefault();
+  content.classList.toggle("content_hide");
+  popupArea.classList.toggle("show");
+  popup_btn.classList.toggle("btn_hide");
+});
 
 function getHistoryObj(type, text, price) {
   //오브젝트들을 생성
@@ -35,15 +44,17 @@ function restoreState() {
   });
 }
 
-function submitForm() {
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (popup_name.value === "") {
-      alert("종류를 입력하세요");
-    } else if (popup_price.value === 0) {
-      alert("가격을 입력하세요");
-    } else {
+    if (popup_name.value === ""|| popup_price.value === "") {
+      popup_btn.classList.toggle("btn_hide");
+      content.classList.toggle("content_hide");
+      popupArea.classList.toggle("show");
+      
+    } 
+    else {
       //가격이랑 종류가 입력되면
       let item_name = popup_name.value;
       let item_price = parseInt(popup_price.value);
@@ -54,38 +65,45 @@ function submitForm() {
       const historyObj = getHistoryObj(item_type, item_name, item_price);
       saveHistory(historyObj);
       saveLS();
-      console.log(historyObj);
-      console.log(historyArr);
+console.log(historyArr);
+console.log(localStorage.getItem("history"));
 
       popup_name.value = "";
       popup_price.value = "";
 
-      addItem(item_type, item_name, item_price);
+      addItem(historyObj.id, item_type, item_name, item_price);
       updateMoney();
+      popup_btn.classList.toggle("btn_hide");
+      content.classList.toggle("content_hide");
+      popupArea.classList.toggle("show");
     }
   });
-}
+
 
 const init = () => {
-  let balance = 0;
-  let income = 0;
-  let expenses = 0;
   updateMoney();
   let today = new Date();
   date.textContent = `${today.getFullYear()}년 ${
     today.getMonth() + 1
   }월 ${today.getDate()}일`;
 
-  submitForm();
-};
+  paintHistory();
 
-function addItem(item_type, item_name, item_price) {
+ 
+};
+function paintHistory(){
+ let history=JSON.parse(localStorage.getItem("history"));
+
+  history.forEach((item)=>{addItem(item.id,item.type, item.text, item.price);})
+}
+function addItem(id, item_type, item_name, item_price) {
   const item = document.createElement("li");
   const comment = document.createElement("span");
+  // comment.style = { "max-width": "100px" };
   const deleteBtn = document.createElement("i");
   if (item_type === "income") {
     item.classList.add("green");
-    item.setAttribute("id", `${self.crypto.randomUUID()}`);
+    item.setAttribute("id", id);
   }
   deleteBtn.classList.add("fa");
   deleteBtn.classList.add("fa-trash");
@@ -99,29 +117,30 @@ function addItem(item_type, item_name, item_price) {
   ul.appendChild(item);
 
   deleteBtn.addEventListener("click", (e) => {
-    console.log("dj;sf");
-    // console.dir(e.target.parentElement)
+  
     e.target.parentElement.remove();
 
     historyArr = historyArr.filter(function (item) {
-      return item.id !== li.id;
-    });
+      
+      return item.id !== e.target.parentElement.id;
+      
+   
+    });console.log(historyArr)
+    saveLS();
+    updateMoney();
   });
 }
 
 const updateMoney = () => {
-  const price = historyArr.map((item) => Number(item.price));
-  // historyArr에 있는 가격들을 숫자로 바꾸기
   const income = historyArr
     .filter((item) => item.type === "income")
     .map((item) => Number(item.price))
     .reduce((acc, cur) => (acc += cur), 0);
-  console.log(income);
   const expenses = historyArr
     .filter((item) => item.type === "expenses")
     .map((item) => Number(item.price))
     .reduce((acc, cur) => (acc += cur), 0);
-  const balance = income-expenses
+  const balance = income - expenses;
 
   total_balance.textContent = `${balance}원`;
   total_income.textContent = ` ${income}원`;
@@ -129,3 +148,4 @@ const updateMoney = () => {
 };
 
 init();
+console.log(localStorage.getItem("history"))

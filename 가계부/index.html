@@ -32,17 +32,17 @@
         </div>
       </header>
 
-      <section class="container">
+      <!-- <section class="container"> -->
         <span class="title">소비 내역</span>
         <ul class="itemList"></ul>
-      </section>
+      <!-- </section> -->
       <section class="popup_area">
          <button type="button" class="popup_btn">
             <i class="fa-solid fa-plus"></i>
           </button>
-        <form class="form">
+        <form  class="form_content content_hide" >
          
-          <section class="form_content hide">
+          
             <label for="income"
               ><input
                 type="radio"
@@ -66,7 +66,9 @@
             <label for="name"
               >종류 <input id="name" class="popup_name" type="text"
             /></label>
-          </section>
+
+            <button type="submit" style="display: none;"></button>
+        
         </form>
       </section>
     </section>
